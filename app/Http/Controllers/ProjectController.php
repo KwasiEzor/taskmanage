@@ -21,10 +21,18 @@ class ProjectController extends Controller
     {
         $this->authorize('viewAny', Project::class);
 
-        $projects = Project::with(['tasks', 'category', 'user' => function ($query) {
+        $query = Project::with(['tasks', 'category', 'user' => function ($query) {
             $query->where('user_id', Auth::id());
             $query->orderBy('created_at', 'desc');
-        }])->latest()->paginate(10);
+        }])->latest();
+
+        // Only paginate if there are more than 5 projects
+        if ($query->count() > 5) {
+            $projects = $query->paginate(6);
+        } else {
+            $projects = $query->get();
+        }
+
         return view('projects.index', compact('projects'));
     }
 
@@ -102,6 +110,46 @@ class ProjectController extends Controller
         $this->authorize('delete', $project);
 
         $project->delete();
-        return redirect()->route('projects.index')->with('success', 'Project deleted successfully');
+        return redirect()->route('projects.index')->with('success', 'Project archived successfully');
+    }
+
+    /**
+     * Restore the specified soft deleted resource.
+     */
+    public function restore($slug)
+    {
+        $project = Project::withTrashed()->where('slug', $slug)->firstOrFail();
+        $this->authorize('restore', $project);
+
+        $project->restore();
+        return redirect()->route('projects.show', $project)->with('success', 'Project restored successfully');
+    }
+
+    /**
+     * Permanently delete the specified resource.
+     */
+    public function forceDelete($slug)
+    {
+        $project = Project::withTrashed()->where('slug', $slug)->firstOrFail();
+        $this->authorize('forceDelete', $project);
+
+        $project->forceDelete();
+        return redirect()->route('projects.index')->with('success', 'Project permanently deleted');
+    }
+
+    /**
+     * Display a listing of soft deleted resources.
+     */
+    public function trashed()
+    {
+        $this->authorize('viewAny', Project::class);
+
+        $trashedProjects = Project::onlyTrashed()
+            ->with(['tasks', 'category', 'user'])
+            ->where('user_id', Auth::id())
+            ->latest()
+            ->paginate(10);
+
+        return view('projects.trashed', compact('trashedProjects'));
     }
 }

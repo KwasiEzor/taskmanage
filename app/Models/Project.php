@@ -69,6 +69,16 @@ class Project extends Model
     }
 
     /**
+     * Get tasks count including soft deleted tasks
+     *
+     * @return int
+     */
+    public function getTasksCountAttribute(): int
+    {
+        return $this->tasks()->withTrashed()->count();
+    }
+
+    /**
      * casts
      *
      * @return array<string, string>

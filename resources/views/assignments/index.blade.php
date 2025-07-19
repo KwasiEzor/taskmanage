@@ -4,12 +4,18 @@
             <h2 class="text-xl font-semibold leading-tight text-gray-800">
                 {{ __('Assignments') }}
             </h2>
-            @can('create', App\Models\Assignment::class)
-            <a href="{{ route('assignments.create') }}"
-                class="px-4 py-2 text-sm font-medium text-white transition-all duration-300 ease-in-out bg-indigo-500 rounded-md hover:bg-indigo-700">
-                {{ __('Create Assignment') }}
-            </a>
-            @endcan
+            <div class="flex space-x-2">
+                <a href="{{ route('assignments.trashed') }}"
+                    class="px-4 py-2 text-sm font-medium text-gray-700 transition-all duration-300 ease-in-out bg-gray-100 rounded-md hover:bg-gray-200">
+                    {{ __('Archived') }}
+                </a>
+                @can('create', App\Models\Assignment::class)
+                <a href="{{ route('assignments.create') }}"
+                    class="px-4 py-2 text-sm font-medium text-white transition-all duration-300 ease-in-out bg-indigo-500 rounded-md hover:bg-indigo-700">
+                    {{ __('Create Assignment') }}
+                </a>
+                @endcan
+            </div>
         </div>
     </x-slot>
 

@@ -18,6 +18,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/projects/{project:slug}/edit', [ProjectController::class, 'edit'])->name('projects.edit');
     Route::put('/projects/{project:slug}', [ProjectController::class, 'update'])->name('projects.update');
     Route::delete('/projects/{project:slug}', [ProjectController::class, 'destroy'])->name('projects.destroy');
+    Route::get('/projects/trashed', [ProjectController::class, 'trashed'])->name('projects.trashed');
+    Route::patch('/projects/{project:slug}/restore', [ProjectController::class, 'restore'])->name('projects.restore');
+    Route::delete('/projects/{project:slug}/force-delete', [ProjectController::class, 'forceDelete'])->name('projects.force-delete');
 });
 Route::get('/projects/{project:slug}', [ProjectController::class, 'show'])->name('projects.show');
 
@@ -32,6 +35,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/tasks/{task:slug}/edit', [TaskController::class, 'edit'])->name('tasks.edit');
     Route::put('/tasks/{task:slug}', [TaskController::class, 'update'])->name('tasks.update');
     Route::delete('/tasks/{task:slug}', [TaskController::class, 'destroy'])->name('tasks.destroy');
+    Route::get('/tasks/trashed', [TaskController::class, 'trashed'])->name('tasks.trashed');
+    Route::patch('/tasks/{task:slug}/restore', [TaskController::class, 'restore'])->name('tasks.restore');
+    Route::delete('/tasks/{task:slug}/force-delete', [TaskController::class, 'forceDelete'])->name('tasks.force-delete');
 });
 Route::get('/tasks/{task:slug}', [TaskController::class, 'show'])->name('tasks.show');
 
@@ -42,6 +48,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/assignments/{assignment:slug}/edit', [AssignmentController::class, 'edit'])->name('assignments.edit');
     Route::put('/assignments/{assignment:slug}', [AssignmentController::class, 'update'])->name('assignments.update');
     Route::delete('/assignments/{assignment:slug}', [AssignmentController::class, 'destroy'])->name('assignments.destroy');
+    Route::get('/assignments/trashed', [AssignmentController::class, 'trashed'])->name('assignments.trashed');
+    Route::patch('/assignments/{assignment:slug}/restore', [AssignmentController::class, 'restore'])->name('assignments.restore');
+    Route::delete('/assignments/{assignment:slug}/force-delete', [AssignmentController::class, 'forceDelete'])->name('assignments.force-delete');
 });
 
 Route::get('/assignments/{assignment:slug}', [AssignmentController::class, 'show'])->name('assignments.show');

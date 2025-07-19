@@ -55,6 +55,16 @@ class Task extends Model
     }
 
     /**
+     * Get assignments count including soft deleted assignments
+     *
+     * @return int
+     */
+    public function getAssignmentsCountAttribute(): int
+    {
+        return $this->assignments()->withTrashed()->count();
+    }
+
+    /**
      * Get the user who owns the task through the project
      *
      * @return BelongsTo<User>

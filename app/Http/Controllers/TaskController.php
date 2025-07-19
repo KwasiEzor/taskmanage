@@ -107,7 +107,53 @@ class TaskController extends Controller
         $task->delete();
 
         return redirect()->route('tasks.index')
-            ->with('flash.banner', 'Task deleted successfully.')
+            ->with('flash.banner', 'Task archived successfully.')
             ->with('flash.bannerStyle', 'success');
+    }
+
+    /**
+     * Restore the specified soft deleted resource.
+     */
+    public function restore($slug)
+    {
+        $task = Task::withTrashed()->where('slug', $slug)->firstOrFail();
+        $this->authorize('restore', $task);
+
+        $task->restore();
+        return redirect()->route('tasks.show', $task)
+            ->with('flash.banner', 'Task restored successfully.')
+            ->with('flash.bannerStyle', 'success');
+    }
+
+    /**
+     * Permanently delete the specified resource.
+     */
+    public function forceDelete($slug)
+    {
+        $task = Task::withTrashed()->where('slug', $slug)->firstOrFail();
+        $this->authorize('forceDelete', $task);
+
+        $task->forceDelete();
+        return redirect()->route('tasks.index')
+            ->with('flash.banner', 'Task permanently deleted.')
+            ->with('flash.bannerStyle', 'success');
+    }
+
+    /**
+     * Display a listing of soft deleted resources.
+     */
+    public function trashed()
+    {
+        $this->authorize('viewAny', Task::class);
+
+        $trashedTasks = Task::onlyTrashed()
+            ->with(['assignments', 'project'])
+            ->whereHas('project', function ($query) {
+                $query->where('user_id', Auth::id());
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        return view('tasks.trashed', compact('trashedTasks'));
     }
 }

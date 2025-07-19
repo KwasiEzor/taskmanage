@@ -105,6 +105,52 @@ class AssignmentController extends Controller
         $assignment->delete();
 
         return redirect()->route('assignments.index')
-            ->with('flash.banner', 'Assignment deleted successfully.');
+            ->with('flash.banner', 'Assignment archived successfully.');
+    }
+
+    /**
+     * Restore the specified soft deleted resource.
+     */
+    public function restore($slug)
+    {
+        $assignment = Assignment::withTrashed()->where('slug', $slug)->firstOrFail();
+        $this->authorize('restore', $assignment);
+
+        $assignment->restore();
+        return redirect()->route('assignments.show', $assignment)
+            ->with('flash.banner', 'Assignment restored successfully.');
+    }
+
+    /**
+     * Permanently delete the specified resource.
+     */
+    public function forceDelete($slug)
+    {
+        $assignment = Assignment::withTrashed()->where('slug', $slug)->firstOrFail();
+        $this->authorize('forceDelete', $assignment);
+
+        $assignment->forceDelete();
+        return redirect()->route('assignments.index')
+            ->with('flash.banner', 'Assignment permanently deleted.');
+    }
+
+    /**
+     * Display a listing of soft deleted resources.
+     */
+    public function trashed()
+    {
+        $this->authorize('viewAny', Assignment::class);
+
+        $trashedAssignments = Assignment::onlyTrashed()
+            ->with('task', 'user')
+            ->whereHas('task', function ($query) {
+                $query->whereHas('project', function ($query) {
+                    $query->where('user_id', Auth::id());
+                });
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(8);
+
+        return view('assignments.trashed', compact('trashedAssignments'));
     }
 }

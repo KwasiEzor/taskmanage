@@ -140,6 +140,25 @@
 
                             <div class="border-t border-gray-200"></div>
 
+                            <!-- Archived Items -->
+                            <div class="block px-4 py-2 text-xs text-gray-400">
+                                {{ __('Archived Items') }}
+                            </div>
+
+                            <x-dropdown-link href="{{ route('projects.trashed') }}">
+                                {{ __('Archived Projects') }}
+                            </x-dropdown-link>
+
+                            <x-dropdown-link href="{{ route('tasks.trashed') }}">
+                                {{ __('Archived Tasks') }}
+                            </x-dropdown-link>
+
+                            <x-dropdown-link href="{{ route('assignments.trashed') }}">
+                                {{ __('Archived Assignments') }}
+                            </x-dropdown-link>
+
+                            <div class="border-t border-gray-200"></div>
+
                             <!-- Authentication -->
                             <form method="POST" action="{{ route('logout') }}" x-data>
                                 @csrf
@@ -226,6 +245,24 @@
                     {{ __('API Tokens') }}
                 </x-responsive-nav-link>
                 @endif
+
+                <!-- Archived Items -->
+                <div class="border-t border-gray-200"></div>
+                <div class="block px-4 py-2 text-xs text-gray-400">
+                    {{ __('Archived Items') }}
+                </div>
+                <x-responsive-nav-link href="{{ route('projects.trashed') }}"
+                    :active="request()->routeIs('projects.trashed')">
+                    {{ __('Archived Projects') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link href="{{ route('tasks.trashed') }}"
+                    :active="request()->routeIs('tasks.trashed')">
+                    {{ __('Archived Tasks') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link href="{{ route('assignments.trashed') }}"
+                    :active="request()->routeIs('assignments.trashed')">
+                    {{ __('Archived Assignments') }}
+                </x-responsive-nav-link>
 
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}" x-data>

@@ -4,9 +4,15 @@
             <h2 class="text-xl font-semibold leading-tight text-gray-800">
                 {{ __('Tasks') }}
             </h2>
-            @can('create', App\Models\Task::class)
-            <a href="{{ route('tasks.create') }}" class="px-4 py-1 rounded-md btn-indigo">Create Task</a>
-            @endcan
+            <div class="flex space-x-2">
+                <a href="{{ route('tasks.trashed') }}"
+                    class="px-4 py-2 text-sm font-medium text-gray-700 transition-all duration-300 ease-in-out bg-gray-100 rounded-md hover:bg-gray-200">
+                    {{ __('Archived') }}
+                </a>
+                @can('create', App\Models\Task::class)
+                <a href="{{ route('tasks.create') }}" class="px-4 py-1 rounded-md btn-indigo">Create Task</a>
+                @endcan
+            </div>
         </div>
     </x-slot>
     <x-wrapper-container class="mt-6 rounded-xl">
