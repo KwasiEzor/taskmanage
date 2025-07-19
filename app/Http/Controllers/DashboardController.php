@@ -25,9 +25,15 @@ class DashboardController extends Controller
         $pendingTasksCount = Task::whereHas('project', function ($q) use ($user) {
             $q->where('user_id', $user->id);
         })->where('status', '!=', 'completed')->count();
-        $assignmentsCount = Assignment::where('user_id', $user->id)->count();
-        $completedAssignmentsCount = Assignment::where('user_id', $user->id)->where('status', 'completed')->count();
-        $pendingAssignmentsCount = Assignment::where('user_id', $user->id)->where('status', '!=', 'completed')->count();
+        $assignmentsCount = Assignment::whereHas('task.project', function ($q) use ($user) {
+            $q->where('user_id', $user->id);
+        })->count();
+        $completedAssignmentsCount = Assignment::whereHas('task.project', function ($q) use ($user) {
+            $q->where('user_id', $user->id);
+        })->where('status', 'completed')->count();
+        $pendingAssignmentsCount = Assignment::whereHas('task.project', function ($q) use ($user) {
+            $q->where('user_id', $user->id);
+        })->where('status', '!=', 'completed')->count();
         return view('dashboard', compact(
             'projectsCount',
             'tasksCount',

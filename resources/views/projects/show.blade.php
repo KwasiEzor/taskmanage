@@ -1,25 +1,27 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            <h2 class="text-xl font-semibold leading-tight text-gray-800">
                 {{ __('Project details') }}
             </h2>
             <div class="flex items-center gap-2">
                 @can('update', $project)
                 <a wire:navigate href="{{ route('projects.edit', $project) }}"
-                    class="btn-indigo rounded-md px-4 py-1">Edit</a>
+                    class="px-4 py-1 rounded-md btn-indigo">Edit</a>
                 @endcan
-                <a wire:navigate href="{{ route('projects.index') }}" class="btn-black rounded-md px-4 py-1">Back</a>
+                <a wire:navigate href="{{ route('projects.index') }}" class="btn btn-black">
+                    <x-heroicon-o-arrow-left class="w-4 h-4" />
+                </a>
             </div>
         </div>
 
 
     </x-slot>
     <x-wrapper-container class="mt-6 rounded-xl">
-        <div class="flex flex-col gap-4 relative">
-            <h1 class="text-2xl font-bold  flex items-center gap-2">
+        <div class="relative flex flex-col gap-4">
+            <h1 class="flex items-center gap-2 text-2xl font-bold">
                 <span class="text-slate-700">Project :</span>
-                <span class="text-indigo-400 hover:text-indigo-500 capitalize underline underline-offset-4">
+                <span class="text-indigo-400 underline capitalize hover:text-indigo-500 underline-offset-4">
                     {{ $project->name }}
                 </span>
                 @can('delete', $project)
@@ -33,24 +35,24 @@
                 </form>
                 @endcan
             </h1>
-            <span class="absolute top-2 right-2 flex items-center gap-2">
+            <span class="absolute flex items-center gap-2 top-2 right-2">
                 <span class="text-sm text-gray-500">Active : </span>
                 @if ($project->is_active)
                 <span
-                    class=" uppercase font-semibold border border-green-400/50 bg-green-50 text-green-500 rounded-md px-2 py-px">Yes</span>
+                    class="px-2 py-px font-semibold text-green-500 uppercase border rounded-md border-green-400/50 bg-green-50">Yes</span>
                 @else
                 <span
-                    class="uppercase text-red-500 font-semibold border border-red-400/50 bg-red-50  rounded-md px-2 py-px">No</span>
+                    class="px-2 py-px font-semibold text-red-500 uppercase border rounded-md border-red-400/50 bg-red-50">No</span>
                 @endif
             </span>
             <p class="text-sm text-gray-500">
                 <span class="font-bold">Category :</span>
                 <span
-                    class=" hover:text-fuchsia-500 uppercase font-semibold border border-fuchsia-400/50 bg-fuchsia-50 text-fuchsia-500 rounded-md px-2 py-px">
+                    class="px-2 py-px font-semibold uppercase border rounded-md hover:text-fuchsia-500 border-fuchsia-400/50 bg-fuchsia-50 text-fuchsia-500">
                     {{ $project->category->name ?? 'No category' }}
                 </span>
             </p>
-            <hr class="border-gray-200 h-px w-full my-4" />
+            <hr class="w-full h-px my-4 border-gray-200" />
             <section class="flex flex-col gap-4" x-data="{ showCreateTaskModal: false }">
                 <div class="flex items-center justify-between">
                     <h2 class="text-lg font-bold">Tasks</h2>
@@ -59,7 +61,7 @@
                     @endcan
                 </div>
 
-                <hr class="border-gray-200 h-px w-full my-4" />
+                <hr class="w-full h-px my-4 border-gray-200" />
                 <x-projects.project-modal :project="$project" />
             </section>
             <h3 class="text-sm font-semibold underline underline-offset-4">Description</h3>

@@ -29,7 +29,7 @@ class TaskPolicy
      */
     public function create(User $user): bool
     {
-        return true; // All authenticated users can create tasks
+        return $user->projects()->count() > 0;
     }
 
     /**

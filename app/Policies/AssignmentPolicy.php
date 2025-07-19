@@ -30,7 +30,7 @@ class AssignmentPolicy
      */
     public function create(User $user): bool
     {
-        return true; // All authenticated users can create assignments
+        return $user->projects()->count() > 0; // All authenticated users can create assignments
     }
 
     /**
