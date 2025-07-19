@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+[x-cloak] {
+    display: none;
+}
+@layer base {
+    .indigo-gradient {
+        @apply bg-gradient-to-t from-indigo-900 to-indigo-400;
+    }
+    .glass-effect {
+        @apply w-full h-full bg-indigo-400 border rounded-md border-gray-100/30 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10;
+    }
+}
+
+@layer components {
+    .btn {
+        @apply inline-flex items-center px-4 py-2  border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest   focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 transition ease-in-out duration-150;
+    }
+    .btn-black {
+        @apply bg-gray-800 text-white hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900;
+    }
+    .btn-indigo {
+        @apply bg-indigo-500 text-white hover:bg-indigo-600 focus:bg-indigo-600 active:bg-indigo-700;
+    }
+    .btn-red {
+        @apply bg-red-500 text-white hover:bg-red-600 focus:bg-red-600 active:bg-red-700;
+    }
+    .btn-green {
+        @apply bg-green-500 text-white hover:bg-green-600 focus:bg-green-600 active:bg-green-700;
+    }
+    .btn-yellow {
+        @apply bg-yellow-500 text-white hover:bg-yellow-600 focus:bg-yellow-600 active:bg-yellow-700;
+    }
+    .btn-blue {
+        @apply bg-blue-500 text-white hover:bg-blue-600 focus:bg-blue-600 active:bg-blue-700;
+    }
+}
